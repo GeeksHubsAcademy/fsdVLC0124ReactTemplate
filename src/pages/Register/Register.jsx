@@ -32,7 +32,11 @@ export const Register = () => {
   const checkError = (e) => {
     const error = validame(e.target.name, e.target.value);
 
-    console.log(error);
+    setUserError((prevState) => ({
+      ...prevState,
+      [e.target.name + "Error"]: error,
+      //el truco del almendruco nos dice que seria... nameError: error, o emailError: error
+    }));
   };
 
   //function emit que también está aqui en el padre...en este caso para registrar...
@@ -44,6 +48,7 @@ export const Register = () => {
         }
       }
 
+
       const fetched = await RegisterUser();
 
       console.log(fetched);
@@ -54,9 +59,11 @@ export const Register = () => {
 
   return (
     <div className="registerDesign">
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
       <CInput
-        className={"inputDesign"}
+        className={`inputDesign ${
+          userError.nameError !== "" ? "inputDesignError" : ""
+        }`}
         type={"text"}
         placeholder={"name"}
         name={"name"}
@@ -64,9 +71,11 @@ export const Register = () => {
         onChangeFunction={(e) => inputHandler(e)}
         onBlurFunction={(e) => checkError(e)}
       />
-      {userError.nameError}
+      <div className="error">{userError.nameError}</div>
       <CInput
-        className={"inputDesign"}
+        className={`inputDesign ${
+          userError.emailError !== "" ? "inputDesignError" : ""
+        }`}
         type={"email"}
         placeholder={"email"}
         name={"email"}
@@ -74,9 +83,11 @@ export const Register = () => {
         onChangeFunction={(e) => inputHandler(e)}
         onBlurFunction={(e) => checkError(e)}
       />
-      {userError.emailError}
+      <div className="error">{userError.emailError}</div>
       <CInput
-        className={"inputDesign"}
+        className={`inputDesign ${
+          userError.passwordError !== "" ? "inputDesignError" : ""
+        }`}
         type={"password"}
         placeholder={"password"}
         name={"password"}
@@ -84,13 +95,13 @@ export const Register = () => {
         onChangeFunction={(e) => inputHandler(e)}
         onBlurFunction={(e) => checkError(e)}
       />
-      {userError.passwordError}
+      <div className="error">{userError.passwordError}</div>
       <CButton
         className={"cButtonDesign"}
         title={"Register"}
         functionEmit={registerMe}
       />
-      {msgError}
+      <div className="error">{msgError}</div>
     </div>
   );
 };

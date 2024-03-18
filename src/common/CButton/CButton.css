@@ -1,0 +1,24 @@
+
+.cButtonDesign {
+
+    height: 3em;
+    width: 18em;
+
+    border-radius: 0.5em;
+
+    background-color: red;
+    color: white;
+    font-weight: bold;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1em;
+}
+
+.cButtonDesign:hover {
+
+    cursor: pointer;
+    transition: 0.2s;
+    background-color: darkred;
+}

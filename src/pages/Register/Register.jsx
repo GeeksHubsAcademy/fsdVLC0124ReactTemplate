@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { CInput } from "../../common/CInput/CInput";
 import "./Register.css";
 import { CButton } from "../../common/CButton/CButton";
+import { RegisterUser } from "../../services/apiCalls";
+import { validame } from "../../utils/functions";
 
 export const Register = () => {
   const [user, setUser] = useState({
@@ -9,6 +11,14 @@ export const Register = () => {
     email: "",
     password: "",
   });
+
+  const [userError, setUserError] = useState({
+    nameError: "",
+    emailError: "",
+    passwordError: "",
+  });
+
+  const [msgError, setMsgError] = useState("");
 
   //funcion emit que está aqui en el padre... que se la pasamos al custom input
   const inputHandler = (e) => {
@@ -19,10 +29,28 @@ export const Register = () => {
     }));
   };
 
+  const checkError = (e) => {
+    const error = validame(e.target.name, e.target.value);
+
+    console.log(error);
+  };
+
   //function emit que también está aqui en el padre...en este caso para registrar...
-  const registerMe = () => {
-    console.log(user, "soy la función que va a registrar....")
-  }
+  const registerMe = async () => {
+    try {
+      for (let elemento in user) {
+        if (user[elemento] === "") {
+          throw new Error("Todos los campos tienen que estar rellenos");
+        }
+      }
+
+      const fetched = await RegisterUser();
+
+      console.log(fetched);
+    } catch (error) {
+      setMsgError(error.message);
+    }
+  };
 
   return (
     <div className="registerDesign">
@@ -34,7 +62,9 @@ export const Register = () => {
         name={"name"}
         value={user.name || ""}
         onChangeFunction={(e) => inputHandler(e)}
+        onBlurFunction={(e) => checkError(e)}
       />
+      {userError.nameError}
       <CInput
         className={"inputDesign"}
         type={"email"}
@@ -42,7 +72,9 @@ export const Register = () => {
         name={"email"}
         value={user.email || ""}
         onChangeFunction={(e) => inputHandler(e)}
+        onBlurFunction={(e) => checkError(e)}
       />
+      {userError.emailError}
       <CInput
         className={"inputDesign"}
         type={"password"}
@@ -50,12 +82,15 @@ export const Register = () => {
         name={"password"}
         value={user.password || ""}
         onChangeFunction={(e) => inputHandler(e)}
+        onBlurFunction={(e) => checkError(e)}
       />
-      <CButton 
+      {userError.passwordError}
+      <CButton
         className={"cButtonDesign"}
         title={"Register"}
         functionEmit={registerMe}
       />
+      {msgError}
     </div>
   );
 };

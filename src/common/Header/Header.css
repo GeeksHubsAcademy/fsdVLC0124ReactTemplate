@@ -6,7 +6,7 @@
     background-color: darkcyan;
 
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
 }

@@ -1,8 +1,12 @@
-# React + Vite
+# Template React + Vite JS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Comandos git 
 
-Currently, two official plugins are available:
+git checkout -b nombredelanuevarama  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Este comando nos genera una nueva rama y además nos situa en ella.  
+
+git merge --no-ff ramaquequeremosmezclarenlaactual  
+
+Con este comando mergearemos la rama en la que hemos venido trabajando a la rama
+que queremos que reciba el contenido.

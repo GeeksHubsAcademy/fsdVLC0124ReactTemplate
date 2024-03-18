@@ -1,11 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { CInput } from "../../common/CInput/CInput";
 import "./Register.css";
 import { CButton } from "../../common/CButton/CButton";
 import { RegisterUser } from "../../services/apiCalls";
 import { validame } from "../../utils/functions";
+import { useNavigate } from "react-router-dom";
 
 export const Register = () => {
+
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -48,10 +52,15 @@ export const Register = () => {
         }
       }
 
+      const fetched = await RegisterUser(user);
 
-      const fetched = await RegisterUser();
+      console.log(fetched)
+      setMsgError(fetched.message)
 
-      console.log(fetched);
+      setTimeout(()=>{
+        navigate("/")
+      },750)
+
     } catch (error) {
       setMsgError(error.message);
     }

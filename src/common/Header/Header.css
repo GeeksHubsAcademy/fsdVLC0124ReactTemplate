@@ -10,3 +10,8 @@
     justify-content: flex-end;
     align-items: flex-end;
 }
+
+.authMenu {
+    display: flex;
+    flex-direction: row;
+}

@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CButton } from "../../common/CButton/CButton";
 import { CInput } from "../../common/CInput/CInput";
 import { validame } from "../../utils/functions";
 import "./Login.css";
 import { LoginUser } from "../../services/apiCalls";
 import { useNavigate } from "react-router-dom";
-import { decodeToken } from "react-jwt"
+import { decodeToken } from "react-jwt";
+
+const datosUser = JSON.parse(localStorage.getItem("passport"));
 
 export const Login = () => {
-
   const navigate = useNavigate();
+  const [tokenStorage, setTokenStorage] = useState(datosUser?.token);
 
   const [credenciales, setCredenciales] = useState({
     email: "",
@@ -23,6 +25,11 @@ export const Login = () => {
 
   const [msgError, setMsgError] = useState("");
 
+  useEffect(() => {
+    if (tokenStorage) {
+      navigate("/");
+    }
+  }, [tokenStorage]);
 
   const inputHandler = (e) => {
     setCredenciales((prevState) => ({
@@ -43,32 +50,33 @@ export const Login = () => {
 
   const loginMe = async () => {
     try {
-        for (let elemento in credenciales) {
-          if (credenciales[elemento] === "") {
-            throw new Error("Todos los campos tienen que estar rellenos");
-          }
+      for (let elemento in credenciales) {
+        if (credenciales[elemento] === "") {
+          throw new Error("Todos los campos tienen que estar rellenos");
         }
-  
-        const fetched = await LoginUser(credenciales);
-
-        const decodificado = decodeToken(fetched.token)
-
-        const passport = {
-            token: fetched.token,
-            decodificado: decodificado
-        }
-
-        localStorage.setItem("passport", JSON.stringify(passport))
-        
-        setMsgError(`Hola ${decodificado.name}, bienvenido de nuevo a este infierno`)
-  
-        setTimeout(()=>{
-          navigate("/")
-        },2000)
-  
-      } catch (error) {
-        setMsgError(error.message);
       }
+
+      const fetched = await LoginUser(credenciales);
+
+      const decodificado = decodeToken(fetched.token);
+
+      const passport = {
+        token: fetched.token,
+        decodificado: decodificado,
+      };
+
+      localStorage.setItem("passport", JSON.stringify(passport));
+
+      setMsgError(
+        `Hola ${decodificado.name}, bienvenido de nuevo a este infierno`
+      );
+
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    } catch (error) {
+      setMsgError(error.message);
+    }
   };
 
   return (

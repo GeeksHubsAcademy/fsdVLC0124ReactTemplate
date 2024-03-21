@@ -7,11 +7,11 @@ import { LoginUser } from "../../services/apiCalls";
 import { useNavigate } from "react-router-dom";
 import { decodeToken } from "react-jwt";
 
-const { decodificado, token } = JSON.parse(localStorage.getItem("passport"));
+const datosUser = JSON.parse(localStorage.getItem("passport"));
 
 export const Login = () => {
   const navigate = useNavigate();
-  const [tokenStorage, setTokenStorage] = useState(token);
+  const [tokenStorage, setTokenStorage] = useState(datosUser?.token);
 
   const [credenciales, setCredenciales] = useState({
     email: "",

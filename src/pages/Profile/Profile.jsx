@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import "./Profile.css";
 import { GetProfile } from "../../services/apiCalls";
 import { CInput } from "../../common/CInput/CInput";
+import dayjs from "dayjs";
 
 const datosUser = JSON.parse(localStorage.getItem("passport"));
 
@@ -48,10 +49,12 @@ export const Profile = () => {
 
         setLoadedData(true);
 
+        const parsedBirth = dayjs(fetched.data.birth).format("YYYY-MM-DD")
+
         setUser({
           name: fetched.data.name,
           surname: fetched.data.surname,
-          birth: fetched.data.birth,
+          birth: parsedBirth,
           email: fetched.data.email,
         });
       } catch (error) {

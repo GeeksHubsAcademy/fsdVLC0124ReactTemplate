@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import "./Profile.css";
-import { GetProfile } from "../../services/apiCalls";
+import { GetProfile, UpdateProfile } from "../../services/apiCalls";
 import { CInput } from "../../common/CInput/CInput";
 import dayjs from "dayjs";
 import { Header } from "../../common/Header/Header";
@@ -60,6 +60,7 @@ export const Profile = () => {
           birth: parsedBirth,
           email: fetched.data.email,
         });
+
       } catch (error) {
         console.log(error);
       }
@@ -70,9 +71,22 @@ export const Profile = () => {
     }
   }, [user]);
 
-  const updateData = () => {
+  const updateData = async () => {
 
-    console.log("vamos a actualizar no???")
+    try {
+      const fetched = await UpdateProfile(tokenStorage, user) 
+
+      setUser({
+        name: fetched.data.name,
+        surname: fetched.data.surname,
+        birth: fetched.data.birth,
+        email: fetched.data.email
+      })
+
+      setWrite("disabled")
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -126,7 +140,7 @@ export const Profile = () => {
               type={"email"}
               placeholder={""}
               name={"email"}
-              disabled={write}
+              disabled={"disabled"}
               value={user.email || ""}
               onChangeFunction={(e) => inputHandler(e)}
               onBlurFunction={(e) => checkError(e)}
@@ -134,7 +148,7 @@ export const Profile = () => {
             <CButton
               className={write === "" ? "cButtonGreen cButtonDesign" : "cButtonDesign"}
               title={write === "" ? "Confirm" : "Edit"}
-              functionEmit={write === "" ? ()=> updateData() : ()=> setWrite("")}
+              functionEmit={write === "" ? updateData : ()=> setWrite("")}
             />
           </div>
         )}

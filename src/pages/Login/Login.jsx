@@ -6,10 +6,11 @@ import "./Login.css";
 import { LoginUser } from "../../services/apiCalls";
 import { useNavigate } from "react-router-dom";
 import { decodeToken } from "react-jwt";
+import { Header } from "../../common/Header/Header";
 
-const datosUser = JSON.parse(localStorage.getItem("passport"));
 
 export const Login = () => {
+  const datosUser = JSON.parse(localStorage.getItem("passport"));
   const navigate = useNavigate();
   const [tokenStorage, setTokenStorage] = useState(datosUser?.token);
 
@@ -80,38 +81,43 @@ export const Login = () => {
   };
 
   return (
-    <div className="loginDesign">
-      <CInput
-        className={`inputDesign ${
-          credencialesError.emailError !== "" ? "inputDesignError" : ""
-        }`}
-        type={"email"}
-        placeholder={"email"}
-        name={"email"}
-        value={credenciales.email || ""}
-        onChangeFunction={(e) => inputHandler(e)}
-        onBlurFunction={(e) => checkError(e)}
-      />
-      <div className="error">{credencialesError.emailError}</div>
-      <CInput
-        className={`inputDesign ${
-          credencialesError.passwordError !== "" ? "inputDesignError" : ""
-        }`}
-        type={"password"}
-        placeholder={"password"}
-        name={"password"}
-        value={credenciales.password || ""}
-        onChangeFunction={(e) => inputHandler(e)}
-        onBlurFunction={(e) => checkError(e)}
-      />
-      <div className="error">{credencialesError.passwordError}</div>
+    <>
+      <Header />
+      <div className="loginDesign">
+        <CInput
+          className={`inputDesign ${
+            credencialesError.emailError !== "" ? "inputDesignError" : ""
+          }`}
+          type={"email"}
+          placeholder={"email"}
+          name={"email"}
+          disabled={""}
+          value={credenciales.email || ""}
+          onChangeFunction={(e) => inputHandler(e)}
+          onBlurFunction={(e) => checkError(e)}
+        />
+        <div className="error">{credencialesError.emailError}</div>
+        <CInput
+          className={`inputDesign ${
+            credencialesError.passwordError !== "" ? "inputDesignError" : ""
+          }`}
+          type={"password"}
+          placeholder={"password"}
+          name={"password"}
+          disabled={""}
+          value={credenciales.password || ""}
+          onChangeFunction={(e) => inputHandler(e)}
+          onBlurFunction={(e) => checkError(e)}
+        />
+        <div className="error">{credencialesError.passwordError}</div>
 
-      <CButton
-        className={"cButtonDesign"}
-        title={"Login"}
-        functionEmit={loginMe}
-      />
-      <div className="error">{msgError}</div>
-    </div>
+        <CButton
+          className={"cButtonDesign"}
+          title={"Login"}
+          functionEmit={loginMe}
+        />
+        <div className="error">{msgError}</div>
+      </div>
+    </>
   );
 };

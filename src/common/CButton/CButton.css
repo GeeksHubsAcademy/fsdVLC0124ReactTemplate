@@ -22,3 +22,11 @@
     transition: 0.2s;
     background-color: darkred;
 }
+
+.cButtonGreen {
+    background-color: green;
+}
+
+.cButtonGreen:hover {
+    background-color: darkgreen;
+}

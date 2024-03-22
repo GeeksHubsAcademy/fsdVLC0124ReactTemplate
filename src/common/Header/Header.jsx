@@ -1,22 +1,29 @@
 import { Navigator } from "../Navigator/Navigator";
+import { useNavigate } from "react-router-dom";
 import "./Header.css";
 
 export const Header = () => {
-  const token = false;
-  
-  const logOut = () => {
-    //esta funcion me deslogeará en un breve futuro...
+  const navigate = useNavigate();
+  const passport = JSON.parse(localStorage.getItem("passport"));
 
-  }
+  const logOut = () => {
+    localStorage.removeItem("passport");
+    navigate("/login");
+  };
 
   return (
     <div className="headerDesign">
       <Navigator title={"home"} destination={"/"} />
 
-      {token ? (
-        <div>
-          <Navigator title={"nickdelusuario"} destination={"/"} />
-          <Navigator title={"log out"} onClick={() => logOut()} />
+      {passport?.token ? (
+        <div className="authMenu">
+          <Navigator
+            title={passport?.decodificado?.name}
+            destination={"/profile"}
+          />
+          <div onClick={logOut}>
+            <Navigator title={"log out"} destination={"/"} />
+          </div>
         </div>
       ) : (
         <div className="authMenu">
